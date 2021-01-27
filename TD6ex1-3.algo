@@ -1,0 +1,31 @@
+PROCEDURE Reequilibrer_inserer(VAR A : AB_B, page : AB_B, n : INTEGER)
+VAR
+    r, q, pere_page : ^AB_B
+    i,j, x : INTEGER
+BEGIN
+    IF (page^.nbr = 2*n+1) THEN // test si page est sature 
+        q : creer_page() // decouper page sure 2 
+        j :=1
+        FOR i FROM n+2 TO 2*n+1 STEP 1  DO // remplissage de q avec la moitier de page
+            q^.fils[j] := page^.fils[i]
+            page^.fils[i] = NIL
+            j := j+1
+        END_FOR
+        q^.nbr := n
+        q^.p0 = NIL
+        x := page^.fils[n+1]^.val // insere dans pere de page l'element de milieu
+        page^.fils[n+1] = NIL
+        pere_page := page_ancetre(A, page)
+        IF (pere_page <> NIL) THEN // pere existe faire traitement
+            Inserer_element(pere_page, x, q)
+            Reequilibrer_inserer(A, pere_page, n)
+        ELSE                        // pas de pere , page = racine 
+            r : creer_page()        // creer nouvelle racine
+            Inserer_element(r, x, q)
+            r^.p0 = page
+            r^.nbr = 1
+            A := r
+        END_IF
+        
+    END_IF
+END

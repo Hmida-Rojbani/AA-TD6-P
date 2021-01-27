@@ -1,0 +1,18 @@
+FUNCTION localiser_page(A : AB_B, x : INTEGER) : AB_B
+VAR
+    i : INTEGER := 1
+BEGIN
+    IF (A^.p0 = NIL OR A = NIL) THEN // A^.p0 = NIL pour tester A est une feuille
+        RETURN A
+    ELSE 
+    WHILE (i < A^.nbr AND x > A^.fils[i]^.val) DO
+        i := i + 1
+    END_WHILE
+
+    IF (i-1 = 0) THEN
+        RETURN localiser_page(A^.p0, x)
+    ELSE
+        RETURN localiser_page(A^.fils[i-1]^.p, x)
+    END_IF
+    END_IF
+END

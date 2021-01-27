@@ -1,0 +1,20 @@
+PROCEDURE Inserer_element(VAR page : AB_B, x :INTEGER, q : AB_B) 
+VAR
+    item : ITEM
+    i : INTEGER := 1 
+    j : INTEGER := page^.nbr+1
+BEGIN
+    item := creer_item()
+    item^.val = x
+    item^.p = q
+    WHILE (page^.fils[i]^.val < x) DO // recherche de position
+        i := i+1
+    END_WHILE
+
+    WHILE (j > i) DO // declage des elements
+        page^.fils[j] := page^.fils[ j-1]
+        j := j-1
+    END_WHILE
+    page^.fils[i] := item
+    page^.nbr := page^.nbr+1
+END
